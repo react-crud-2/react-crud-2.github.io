@@ -1,8 +1,16 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import { ReactCrud } from 'react-crud-2';
+import axios from 'axios';
 
 const formData = [
+  {
+    name: "id",
+    type: "text",
+    label: "Id",
+    placeholder: "Enter your id",
+    value: ""
+  },
   {
     name: "firstName",
     type: "text",
@@ -15,6 +23,13 @@ const formData = [
     type: "text",
     label: "Last Name",
     placeholder: "Enter your last name",
+    value: ""
+  },
+  {
+    name: "dob",
+    type: "date",
+    label: "Date Of Birth",
+    placeholder: "Enter Date Of Birth",
     value: ""
   },
   {
@@ -32,11 +47,19 @@ const formData = [
     value: ""
   }
 ];
-const storeData = () => {
-  console.log("Store Data");
+const storeData = (formData) => {
+  console.log("Store Data triggered.");
+  axios.post("https://jsonplaceholder.typicode.com/todos", formData)
+    .then(response => {
+      console.log("Data successfully posted:", response.data);
+    })
+    .catch(error => {
+      console.error("There was an error posting the data:", error);
+    });
 }
-const listData = [{ 'id': 1, name: 'John', email: 'test@mail.com' }];
-const fieldsToShow = ['name', 'email'];
+const listData = [{ 'id': 1, firstName: 'Abdur', lastName: 'Rahman', email: 'a.rahman@mail.com', 'address': 'Dhaka, Bangladesh' }];
+const fieldsToShow = ['id', 'firstName', 'lastName', 'email', 'address'];
+
 function App() {
   return (
     <div>
