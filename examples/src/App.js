@@ -32,12 +32,20 @@ const formData = [
     value: ""
   }
 ];
-
+const storeData = () => {
+  console.log("Store Data");
+}
+const listData = [{ 'id': 1, name: 'John', email: 'test@mail.com' }];
+const fieldsToShow = ['name', 'email'];
 function App() {
   return (
     <div>
       <div className="App">
-        <ReactCrud formTitle={"Employee Data"} showDate={false} bengaliDate={false} data={formData} />
+        <ReactCrud formTitle={"Employee Data"}
+          storeData={storeData}
+          formEntryData={formData}
+          listData={listData}
+          fieldsToShow={fieldsToShow} />
       </div>
     </div>
   );
