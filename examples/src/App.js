@@ -1,17 +1,21 @@
 // import logo from './logo.svg';
 import './App.css';
+// import { ReactCrud } from 'react-crud-2';
 import { ReactCrud } from 'react-crud-2';
 import axios from 'axios';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const formData = [
   {
+    isRequired: false,
     name: "id",
-    type: "text",
+    type: "hidden",
     label: "Id",
     placeholder: "Enter your id",
     value: ""
   },
   {
+    isRequired: true,
     name: "firstName",
     type: "text",
     label: "First Name",
@@ -19,6 +23,7 @@ const formData = [
     value: ""
   },
   {
+    isRequired: true,
     name: "lastName",
     type: "text",
     label: "Last Name",
@@ -26,6 +31,7 @@ const formData = [
     value: ""
   },
   {
+    isRequired: true,
     name: "dob",
     type: "date",
     label: "Date Of Birth",
@@ -33,6 +39,7 @@ const formData = [
     value: ""
   },
   {
+    isRequired: true,
     name: "email",
     type: "email",
     label: "Email",
@@ -40,6 +47,7 @@ const formData = [
     value: ""
   },
   {
+    isRequired: true,
     name: "address",
     type: "textarea",
     label: "Address",
@@ -48,16 +56,27 @@ const formData = [
   }
 ];
 const storeData = (formData) => {
-  console.log("Store Data triggered.");
-  axios.post("https://jsonplaceholder.typicode.com/todos", formData)
-    .then(response => {
-      console.log("Data successfully posted:", response.data);
-    })
-    .catch(error => {
-      console.error("There was an error posting the data:", error);
-    });
+  return new Promise((resolve, reject) => {
+    console.log("Store Data triggered.");
+    axios.post("https://jsonplaceholder.typicode.com/todos", formData)
+      .then(response => {
+        console.log("Data successfully posted:", response.data);
+        resolve(response.data);
+      })
+      .catch(error => {
+        console.error("There was an error posting the data:", error);
+        reject(error);
+      });
+  });
 }
-const listData = [{ 'id': 1, firstName: 'Abdur', lastName: 'Rahman', email: 'a.rahman@mail.com', 'address': 'Dhaka, Bangladesh' }];
+const listData = Array.from({ length: 30 }, (v, i) => ({
+  id: i + 1,
+  firstName: `FirstName${i + 1}`,
+  lastName: `LastName${i + 1}`,
+  dob: `2000-01-${String(i + 1).padStart(2, '0')}`,
+  email: `user${i + 1}@mail.com`,
+  address: `Address ${i + 1}, City, Country`
+}));
 const fieldsToShow = ['id', 'firstName', 'lastName', 'email', 'address'];
 
 function App() {
@@ -65,7 +84,7 @@ function App() {
     <div>
       <div className="App">
         <ReactCrud formTitle={"Employee Data"}
-          storeData={storeData}
+          dataStoreHook={storeData}
           formEntryData={formData}
           listData={listData}
           fieldsToShow={fieldsToShow} />
