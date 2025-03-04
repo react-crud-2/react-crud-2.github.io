@@ -55,7 +55,7 @@ const formData = [
     value: ""
   }
 ];
-const storeData = (formData) => {
+const saveEmployee = (formData) => {
   return new Promise((resolve, reject) => {
     console.log("Store Data triggered.");
     axios.post("https://jsonplaceholder.typicode.com/todos", formData)
@@ -69,6 +69,22 @@ const storeData = (formData) => {
       });
   });
 }
+
+const deleteEmployee = (id) => {
+  return new Promise((resolve, reject) => {
+    console.log("Delete Data triggered.");
+    axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+      .then(response => {
+        console.log("Data successfully deleted:", response.data);
+        resolve(response.data);
+      })
+      .catch(error => {
+        console.error("There was an error deleting the data:", error);
+        reject(error);
+      });
+  });
+}
+
 const listData = Array.from({ length: 30 }, (v, i) => ({
   id: i + 1,
   firstName: `FirstName${i + 1}`,
@@ -77,14 +93,16 @@ const listData = Array.from({ length: 30 }, (v, i) => ({
   email: `user${i + 1}@mail.com`,
   address: `Address ${i + 1}, City, Country`
 }));
-const fieldsToShow = ['id', 'firstName', 'lastName', 'email', 'address'];
 
+
+const fieldsToShow = ['id', 'firstName', 'lastName', 'email', 'address'];
 function App() {
   return (
     <div>
       <div className="App">
-        <ReactCrud formTitle={"Employee Data"}
-          dataStoreHook={storeData}
+        <ReactCrud formTitle={"Employee Information"}
+          dataStoreHook={saveEmployee}
+          dataRemoveHook={deleteEmployee}
           formEntryData={formData}
           listData={listData}
           fieldsToShow={fieldsToShow} />
